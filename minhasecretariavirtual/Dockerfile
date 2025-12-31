@@ -14,7 +14,8 @@ COPY src ./src
 
 # Gera o jar
 RUN mvn clean package -DskipTests
-
+RUN ls -R src/main/resources/db/migration/
+RUN jar -tf target/*.jar | grep db/migration/
 
 # =========================
 # STAGE 2 — RUNTIME
