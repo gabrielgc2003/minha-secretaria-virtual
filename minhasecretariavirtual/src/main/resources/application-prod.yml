@@ -9,7 +9,6 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
-    defer-datasource-initialization: true
     show-sql: false
     properties:
       hibernate:
@@ -27,3 +26,5 @@ server:
 logging:
   level:
     root: INFO
+    org.flywaydb: DEBUG
+    org.springframework.boot.autoconfigure.flyway: DEBUG
