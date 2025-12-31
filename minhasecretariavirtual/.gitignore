@@ -1,0 +1,76 @@
+# ===============================
+# Maven / Java
+# ===============================
+target/
+*.class
+*.jar
+*.war
+*.ear
+!.mvn/wrapper/maven-wrapper.jar
+
+# ===============================
+# Spring Boot
+# ===============================
+HELP.md
+application-local.yml
+application-dev.yml
+application-prod.yml
+application-security.yml
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+
+# ===============================
+# Environment / Secrets
+# ===============================
+.env
+.env.*
+*.key
+*.pem
+*.crt
+
+# ===============================
+# Docker
+# ===============================
+.dockerignore
+docker-compose.yml
+
+# ===============================
+# IDEs
+# ===============================
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# ===============================
+# OS
+# ===============================
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: minha-secretaria-virtual
+  config:
+    import:
+      - classpath:application-security.yml
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    root: INFO
+
+

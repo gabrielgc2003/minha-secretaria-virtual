@@ -1,0 +1,5 @@
+security:
+  jwt:
+    issuer: minha-secretaria-virtual
+    secret: ${JWT_SECRET:58bc746bcbc0f2979f94cdb22d477d18}
+    expiration-minutes: 60
