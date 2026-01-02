@@ -16,4 +16,5 @@ public class FlywayForceConfig {
         System.out.println(">>> FORCING FLYWAY MIGRATION <<<");
         flyway.migrate();
     }
+
 }
