@@ -1,5 +1,6 @@
 package br.com.minhasecretariavirtual.dto;
 
+import br.com.minhasecretariavirtual.enums.ConversationAction;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,8 @@ public class ConversationResponseDTO {
      * Ação que o n8n/IA deve executar.
      * Ex: ASK_SERVICE, ASK_DATE, FINISH
      */
-    @NotBlank
-    private String action;
+    @NotNull
+    private ConversationAction action;
 
     /**
      * Contexto seguro para a IA gerar a mensagem.

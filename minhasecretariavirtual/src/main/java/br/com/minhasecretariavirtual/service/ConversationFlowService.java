@@ -15,14 +15,15 @@ public class ConversationFlowService {
     private final InformationalFlowStrategy informationalFlowStrategy;
     private final SchedulingFlowStrategy schedulingFlowStrategy;
 
-    public ConversationResponseDTO nextStep(Conversation conversation) {
+    public ConversationResponseDTO nextStep(Conversation conversation
+                                            , String message) {
 
         Tenant tenant = tenantService.getCurrentTenant();
 
         ConversationFlowStrategy strategy =
                 resolveStrategy(tenant.getBusinessType());
 
-        return strategy.nextStep(conversation);
+        return strategy.nextStep(conversation, message);
     }
 
     private ConversationFlowStrategy resolveStrategy(

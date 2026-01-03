@@ -4,6 +4,7 @@ import br.com.minhasecretariavirtual.model.Conversation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +15,6 @@ public interface ConversationRepository extends JpaRepository<Conversation, UUID
             UUID tenantId,
             String phone
     );
+
+    Optional<Conversation> findTopByTenantIdAndPhoneOrderByUpdatedAtDesc(UUID tenantId, String phone);
 }

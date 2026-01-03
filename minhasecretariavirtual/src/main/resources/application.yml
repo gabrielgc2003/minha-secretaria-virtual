@@ -14,4 +14,15 @@ logging:
   level:
     root: INFO
 
+ai:
+  provider: grok
+  intent:
+    model: grok-2-latest
+    timeout-ms: 3000
+
+grok:
+  api:
+    url: https://api.x.ai/v1/chat/completions
+    key: ${GROK_API_KEY}
+
 

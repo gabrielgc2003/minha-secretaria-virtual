@@ -22,7 +22,8 @@ public class ConversationService {
         UUID tenantId = TenantContext.getTenant();
 
         return conversationRepository
-                .findByTenantIdAndPhone(tenantId, phone)
+                .findTopByTenantIdAndPhoneOrderByUpdatedAtDesc(tenantId, phone)
+                .filter(conv -> conv.getState() != ConversationState.FINALIZADO)
                 .orElseGet(() -> createNewConversation(tenantId, phone));
     }
 

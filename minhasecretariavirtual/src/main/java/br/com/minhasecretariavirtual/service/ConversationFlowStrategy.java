@@ -8,5 +8,5 @@ public interface ConversationFlowStrategy {
      * Decide o próximo passo da conversa
      * com base no estado atual.
      */
-    ConversationResponseDTO nextStep(Conversation conversation);
+    ConversationResponseDTO nextStep(Conversation conversation, String message);
 }

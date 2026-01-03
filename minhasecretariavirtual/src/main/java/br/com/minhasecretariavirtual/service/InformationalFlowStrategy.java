@@ -1,7 +1,9 @@
 package br.com.minhasecretariavirtual.service;
 
 import br.com.minhasecretariavirtual.dto.ConversationResponseDTO;
+import br.com.minhasecretariavirtual.enums.ConversationAction;
 import br.com.minhasecretariavirtual.enums.ConversationState;
+import br.com.minhasecretariavirtual.enums.UserIntent;
 import br.com.minhasecretariavirtual.model.Conversation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,46 +15,100 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class InformationalFlowStrategy implements ConversationFlowStrategy {
 
+    private final SimpleIntentParser intentParser;
+    private IntentResolverService intentResolver;
+
     @Override
-    public ConversationResponseDTO nextStep(Conversation conversation) {
+    public ConversationResponseDTO nextStep(
+            Conversation conversation,
+            String message
+    ) {
 
-        switch (conversation.getState()) {
+        return switch (conversation.getState()) {
 
-            case NOVO_CONTATO:
-                conversation.setState(ConversationState.AGUARDANDO_INTENCAO);
-                return askIntent();
+            case NOVO_CONTATO -> handleNewContact(conversation);
 
-            case AGUARDANDO_INTENCAO:
+            case AGUARDANDO_INTENCAO ->
+                    handleIntent(conversation, message);
+
+            default -> handleEscalation(conversation);
+        };
+    }
+
+    private ConversationResponseDTO handleNewContact(
+            Conversation conversation
+    ) {
+        conversation.setState(ConversationState.AGUARDANDO_INTENCAO);
+        return askIntent();
+    }
+
+    private ConversationResponseDTO handleIntent(
+            Conversation conversation,
+            String message
+    ) {
+        UserIntent intent =
+                intentResolver.resolve(
+                        conversation.getTenantId(),
+                        message
+                );
+
+        return switch (intent) {
+
+            case INFORMATION -> {
                 conversation.setState(ConversationState.FINALIZADO);
-                return inform();
+                yield inform();
+            }
 
-            default:
+            case HUMAN -> {
                 conversation.setState(ConversationState.ESCALADO_HUMANO);
-                return escalate();
-        }
+                yield escalate();
+            }
+
+            default -> askIntentAgain();
+        };
     }
 
     private ConversationResponseDTO askIntent() {
         return ConversationResponseDTO.builder()
-                .action("ASK_INTENT")
+                .action(ConversationAction.ASK_INTENT)
                 .context(
-                        Map.of("options", List.of("Informações", "Atendente"))
+                        Map.of("options",
+                                List.of("Informações", "Atendente"))
+                )
+                .build();
+    }
+
+    private ConversationResponseDTO askIntentAgain() {
+        return ConversationResponseDTO.builder()
+                .action(ConversationAction.ASK_INTENT_AGAIN)
+                .context(
+                        Map.of("options",
+                                List.of("Informações", "Atendente"),
+                                "error", "INVALID_OPTION")
                 )
                 .build();
     }
 
     private ConversationResponseDTO inform() {
         return ConversationResponseDTO.builder()
-                .action("INFORM")
+                .action(ConversationAction.INFORM)
                 .context(Map.of())
                 .build();
     }
 
     private ConversationResponseDTO escalate() {
         return ConversationResponseDTO.builder()
-                .action("ESCALATE_HUMAN")
+                .action(ConversationAction.ESCALATE_HUMAN)
                 .context(Map.of())
                 .build();
     }
+
+    private ConversationResponseDTO handleEscalation(
+            Conversation conversation
+    ) {
+        conversation.setState(ConversationState.ESCALADO_HUMANO);
+        return escalate();
+    }
 }
+
 

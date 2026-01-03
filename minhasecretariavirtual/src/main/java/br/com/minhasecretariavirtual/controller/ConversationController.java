@@ -35,7 +35,7 @@ public class ConversationController {
 
         // 2️⃣ Decide o próximo passo do fluxo
         ConversationResponseDTO response =
-                conversationFlowService.nextStep(conversation);
+                conversationFlowService.nextStep(conversation, request.getMessage());
 
         // 3️⃣ Persiste o novo estado da conversa
         conversationService.save(conversation);
