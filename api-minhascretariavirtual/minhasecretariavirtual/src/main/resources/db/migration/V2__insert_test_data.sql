@@ -6,7 +6,7 @@ INSERT INTO tenants (
     instance_name,
     api_key_evolution,
     system_prompt,
-    instruction
+    instruction,
     active
 ) VALUES (
              '11111111-1111-1111-1111-111111111111',
